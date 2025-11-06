@@ -4,11 +4,11 @@ Functions, Scope & Closures
 
 Declaration
  function sayHi() {}
-Hoisted - Can be called before it's defined.
+Hoisted with their entire definition - Can be called before it's defined.
 
 Expression
  const sayHi = function() {};
-Not hoisted. let / const are in TDZ
+Hoisted only by their name, not their value. let / const are in TDZ
 
 Arrow Function
  const sayHi = () => {}
