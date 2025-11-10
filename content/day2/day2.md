@@ -1,4 +1,5 @@
-Functions, Scope & Closures
+// Day 2 // 
+•Functions, Scope & Closures
 
 1. Function Types:
 

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Challenges</title>
+</head>
+
+<body>
+    <!-- #1 Color Switcher -->
+    <!-- <section class="challenge1">
+        <section style="display: flex; flex-direction: column; align-items: center;">
+            <p style="font-size: 1.5rem; font-weight: bold;" id="text">Change my color!</p>
+
+            <div>
+                <button data-color="red" class="color-btn">Red</button>
+                <button data-color="green" class="color-btn">Green</button>
+                <button data-color="blue" class="color-btn">Blue</button>
+            </div>
+        </section>
+
+        <script>
+            const text = document.getElementById("text");
+            const buttons = document.querySelectorAll(".color-btn");
+
+            buttons.forEach(button => {
+                button.addEventListener("click", ({ target }) => {
+                    const color = target.dataset.color;
+                    text.style.color = color;
+                })
+            });
+
+        </script>
+    </section> -->
+
+    <!-- #2 Quote switcher -->
+    <section class="challenge2">
+        <h1>Quote Switcher</h1>
+        <p class="quote">Click a button for inspiration</p>
+
+        <button data-quote="'You have power over your mind — not outside events. Realize this, and you will find strength.' — Marcus Aurelius" data-label="Stoic" class="btn"></button>
+        <button data-quote="'The way to get started is to quit talking and begin doing.' — Walt Disney" data-label="Motivation" class="btn"></button>
+        <button data-quote="'It's not the load that breaks you down, it's the way you carry it.' — Lou Holtz " data-label="Mindset" class="btn"></button>
+        <button class="btn special" data-quote="'In the middle of every difficulty lies opportunity.' — Albert Einstein" data-label="Special" data-format="html"></button>
+    </section>
+
+    <script>
+        const quoteEl = document.querySelector(".quote");
+        const buttons = document.querySelectorAll(".btn");
+
+        buttons.forEach(btn => {
+            const { quote, label, format }  = btn.dataset;
+            btn.textContent = `${label} Quote`;
+
+            btn.addEventListener("click", () => {
+                if (format === "html") {
+                    quoteEl.innerHTML = `<strong>${quote}</strong>`;
+                } else {
+                    quoteEl.textContent = quote;
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>
