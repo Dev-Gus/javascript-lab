@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Challenges - 2</title>
+</head>
+<body>
+    <section>
+        <h1>Image Switcher</h1>
+
+        <div>
+            <img id="image" style="width: 90%; height: 30rem;" src="https://media.istockphoto.com/id/517188688/photo/mountain-landscape.jpg?s=1024x1024&w=0&k=20&c=z8_rWaI8x4zApNEEG9DnWlGXyDIXe-OmsAyQ5fGPVV8=" alt="landscape">
+        </div>
+
+        <div class="buttons">
+            <button data-url="https://images.pexels.com/photos/208984/pexels-photo-208984.jpeg?cs=srgb&dl=pexels-pixabay-208984.jpg&fm=jpg" data-animal="cat" class="btn">Show Cat</button>
+            <button data-url="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJWuQ5-oNaaBOU6EXI-zdeveuXYzbJlct62A&s" data-animal="dog" class="btn">Show Dog</button>
+        </div>
+    </section>
+
+    <script>
+        const imgEl = document.getElementById("image");
+        const buttons = document.querySelectorAll(".btn");
+
+        buttons.forEach(btn => {
+            btn.addEventListener("click", ({target}) => {
+                const {url, animal} = target.dataset;
+
+                imgEl.setAttribute("src", `${url}`);
+                imgEl.setAttribute("alt", `Cute ${animal} portrait`);
+                console.log(imgEl.getAttribute("alt"));
+            })
+        })
+    </script>
+</body>
+</html>
