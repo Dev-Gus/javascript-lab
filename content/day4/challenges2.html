@@ -27,8 +27,8 @@
             btn.addEventListener("click", ({target}) => {
                 const {url, animal} = target.dataset;
 
-                imgEl.setAttribute("src", `${url}`);
-                imgEl.setAttribute("alt", `Cute ${animal} portrait`);
+                imgEl.src = url;
+                imgEl.alt = `Cute ${animal} portrait`;
                 console.log(imgEl.getAttribute("alt"));
             })
         })
