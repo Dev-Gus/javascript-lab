@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Counter App</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <section class="counter-app">
+        <h1>Counter</h1>
+        <h2 id="value">0</h2>
+
+        <div class="buttons">
+            <button class="btn decrease">Decrease</button>
+            <button class="btn reset">Reset</button>
+            <button class="btn increase">increase</button>
+        </div>
+    </section>
+
+    <script>
+        const valueEl = document.getElementById("value");
+        const buttonsContainer = document.querySelector(".buttons");
+
+        let count = 0;
+
+        buttonsContainer.addEventListener("click", ({target}) => {
+            if(!target.classList.contains("btn")) return;
+
+            const actions = {
+                decrease: () => count--,
+                increase: () => count++,
+                reset: () => (count = 0),
+            };
+
+            const action = [...target.classList].find(cls => actions[cls]);
+            
+            if (action) actions[action]();
+
+            valueEl.textContent = count;
+            valueEl.style.color = count > 0 ? "green" : count < 0 ? "red" : "black";
+        });
+    </script>
+</body>
+
+</html>

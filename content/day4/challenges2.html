@@ -21,17 +21,18 @@
 
     <script>
         const imgEl = document.getElementById("image");
-        const buttons = document.querySelectorAll(".btn");
+        const buttonsContainer = document.querySelector(".buttons");
 
-        buttons.forEach(btn => {
-            btn.addEventListener("click", ({target}) => {
-                const {url, animal} = target.dataset;
+        buttonsContainer.addEventListener("click", (e) => {
+            const target = e.target;
 
-                imgEl.src = url;
-                imgEl.alt = `Cute ${animal} portrait`;
-                console.log(imgEl.getAttribute("alt"));
-            })
-        })
+            if (!target.matches(".btn")) return;
+
+            const {url, animal} = target.dataset;
+
+            imgEl.src = url;
+            imgEl.alt = `Cute ${animal} portrait`;
+        });
     </script>
 </body>
 </html>

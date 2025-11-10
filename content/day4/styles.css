@@ -1,0 +1,18 @@
+* {
+    box-sizing: border-box;
+}
+
+.counter-app {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#value {
+    font-size: 2rem;
+}
+
+.buttons .btn:nth-child(2) {
+    margin-inline: 1rem;
+}
