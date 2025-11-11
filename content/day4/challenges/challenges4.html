@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Challenges #4</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <!-- <section class="classes">
+        <h1>Theme switcher</h1>
+
+        <h2>State: <span id="state">Light</span> Mode</h2>
+
+        <div class="buttons">
+            <button class="btn--light">Light mode</button>
+            <button class="btn--dark">Dark mode</button>
+        </div>
+    </section>
+
+    <script>
+        const bodyElement = document.body;
+        const lightBtn = document.querySelector(".btn--light");
+        const darkBtn = document.querySelector(".btn--dark");
+        const state = document.getElementById("state");
+
+        const setTheme = (mode) => {
+            bodyElement.classList.toggle('dark-theme', mode === 'dark');
+            state.textContent = mode === 'dark' ? 'Dark' : 'Light';
+            console.log(`${mode} mode activated`);
+        };
+
+        lightBtn.addEventListener('click', ()=> setTheme('light'));
+        darkBtn.addEventListener('click', () => setTheme('dark'));
+    </script> -->
+
+    <section class="events">
+        <h1>Event Practice</h1>
+        <button class="btn--1">Click Me</button>
+        <form action="" class="form">
+            <input class="input" type="text" placeholder="Type something">
+            <button>Submit</button>
+        </form>
+    </section>
+
+    <script>
+        const mainBtn = document.querySelector(".btn--1");
+        const form = document.querySelector(".form");
+        const input = document.querySelector(".input");
+
+        mainBtn.addEventListener('click', (e) => {
+            console.log(`Button clicked! Type: ${e.type}, Target:`, e.target);
+            console.log(e);
+        });
+
+        input.addEventListener('input', () => {
+            console.log(input.value);
+        });
+
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            console.log('Form submitted!');
+        })
+
+    </script>
+</body>
+
+</html>
