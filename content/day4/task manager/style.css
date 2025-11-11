@@ -1,0 +1,134 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f4f4f9;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
+    padding: 2rem;
+}
+
+.task-manager {
+    background-color: #d4cece;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    width: 100%;
+    max-width: 400px;
+}
+
+.task {
+    opacity: 0;
+    transition: opacity .4s ease, transform .4s ease;
+    transform: translateX(0);
+}
+
+.task:hover {
+    background-color: #f0f0f0;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    transform: translateY(-2px);
+    transition: all .2s ease;
+}
+
+.task.loaded {
+    opacity: 1;
+    transition: opacity .4s ease;
+}
+
+.task.fade-out {
+    opacity: 0;
+    transform: translateX(20px);
+    transition: opacity .4s ease, transform .4s ease;
+}
+
+.task.completed .task-text {
+    text-decoration: line-through;
+    color: #999;
+}
+
+.task-input {
+    padding: .6rem 1rem;
+    flex: 1;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    margin-right: .5rem;
+    font-size: 1rem;
+}
+
+.add-btn {
+    padding: .6rem 1rem;
+    border: none;
+    border-radius: 6px;
+    background-color: #4CAF50;
+    color: #fff;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color .3s ease;
+}
+
+.add-btn:hover {
+    background-color: #45a049;
+}
+
+.task-list {
+    list-style: none;
+    padding: 0;
+    margin-top: 1rem;
+}
+
+.task {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: .7rem 1rem;
+    border-bottom: 1px solid #eee;
+    border-radius: 8px;
+    margin-bottom: .5rem;
+    background-color: #fafafa;
+}
+
+.task-actions button {
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    font-size: 1.1rem;
+    margin-left: .5rem;
+    transition: transform .2s ease;
+}
+
+.complete-btn:hover {
+    color: #4caf50;
+    transform: scale(1.2);
+}
+
+.delete-btn:hover {
+    color: #f44336;
+    transform: scale(1.2);
+}
+
+.input-group {
+    display: flex;
+    gap: .5rem;
+    width: 100%;
+}
+
+.counters {
+    font-size: .9rem;
+    color: #667;
+    margin-top: .5rem;
+    align-self: flex-start;
+}
+
+@media (max-width: 400px) {
+    .input-group {
+        flex-direction: column;
+    }
+
+    .task-input, .add-btn {
+        width: 100%;
+    }
+}

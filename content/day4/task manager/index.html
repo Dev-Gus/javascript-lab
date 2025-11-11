@@ -1,18 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Task Manager</title>
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
     <section class="task-manager" aria-labelledby="tm-title">
         <h1 id="tm-title">Task Manager</h1>
 
         <label for="task-input" class="visually-hidden">New task</label>
-        <input placeholder="Write a new task" type="text" id="task-input" class="task-input">
-        <button class="add-btn">Add Task</button>
+        <div class="input-group">
+            <input placeholder="Write a new task" type="text" id="task-input" class="task-input">
+            <button class="add-btn">Add Task</button>
+        </div>
 
         <p class="counters">Total: <span id="total">0</span> — Done: <span id="done">0</span></p>
 
@@ -21,4 +25,5 @@
 
     <script src="script.js"></script>
 </body>
+
 </html>
