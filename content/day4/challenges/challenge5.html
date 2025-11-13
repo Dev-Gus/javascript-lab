@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Shopping Cart Preview</title>
+  </head>
+  <body>
+    <section class="products">
+      <button data-product="Laptop" data-price="1200" class="add-btn">
+        Add Laptop
+      </button>
+      <button data-product="Headphones" data-price="200" class="add-btn">
+        Add Headphones
+      </button>
+      <button data-product="Mouse" data-price="50" class="add-btn">
+        Add Mouse
+      </button>
+    </section>
+
+    <section class="cart-container">
+      <h2>Cart:</h2>
+      <ul class="cart"></ul>
+    </section>
+
+    <style>
+        .cart li {
+            margin: .5rem 0;
+        }
+    </style>
+
+    <script>
+      const products = document.querySelector(".products");
+      const cart = document.querySelector(".cart");
+
+      products.addEventListener("click", (e) => {
+        if (e.target.classList.contains("add-btn")) {
+          const product = document.createElement("li");
+          product.textContent = `${e.target.dataset.product} — $ ${e.target.dataset.price}`;
+
+          cart.append(product);
+        }
+      });
+    </script>
+  </body>
+</html>
