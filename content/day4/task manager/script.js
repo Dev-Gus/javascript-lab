@@ -7,6 +7,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const total = document.getElementById('total');
     const done = document.getElementById('done');
 
+    const STORAGE_KEY = "tasks";
+    let saveTimeout;
+
     loadTasks();
 
     // 2. Add listeners (add task, handle Enter key, handle delegation on ul)
@@ -17,18 +20,15 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     // 3. Define small helper functions:
-    //    - addTask()
-    function addTask(text, completed = false) {
-        const taskTextValue = (typeof text === 'string') ? text.trim() : input.value.trim();
-
-        if (!taskTextValue) return;
-
+    //    - DOM-building logic func
+    function createTaskElement(text, completed = false) {
         const task = document.createElement('li');
         task.classList.add('task');
+        if (completed) task.classList.add('completed');
 
         const taskText = document.createElement('span');
         taskText.classList.add('task-text');
-        taskText.textContent = taskTextValue;
+        taskText.textContent = text;
 
         const taskActions = document.createElement('div');
         taskActions.classList.add('task-actions');
@@ -46,13 +46,21 @@ document.addEventListener("DOMContentLoaded", () => {
         taskActions.append(completeBtn, deleteBtn);
         task.append(taskText, taskActions);
 
-        if (completed) task.classList.add('completed');
+        return task;
+    }
+    //    - addTask()
+    function addTask(text, completed = false) {
+        const taskTextValue = (typeof text === 'string') ? text.trim() : input.value.trim();
+
+        if (!taskTextValue) return;
+
+        const task = createTaskElement(taskTextValue, completed);
 
         list.append(task);
         requestAnimationFrame(() => task.classList.add('loaded'));
         saveTasks();
 
-        if(typeof text === 'undefined') {
+        if (typeof text === 'undefined') {
             input.value = '';
             input.focus();
         }
@@ -93,26 +101,23 @@ document.addEventListener("DOMContentLoaded", () => {
 
     //    - saveTasks() / loadTasks() (for bonus)
     function saveTasks() {
-        const tasksData = [];
-        const task = list.querySelectorAll('.task');
+        clearTimeout(saveTimeout);
+        saveTimeout = setTimeout(() => {
+            const tasksData = [...list.children].map(task => ({
+                text: task.querySelector('.task-text').textContent,
+                completed: task.classList.contains('completed'),
+            }));
 
-        task.forEach((task) => {
-            const textEl = task.querySelector('.task-text');
-            const text = textEl ? textEl.textContent : '';
-            const completed = task.classList.contains('completed');
-
-            tasksData.push({ text, completed });
-        });
-
-        localStorage.setItem('tasks', JSON.stringify(tasksData));
-    };
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(tasksData));
+        }, 300);
+    }
 
     function loadTasks() {
-        const stored = localStorage.getItem('tasks');
+        const stored = localStorage.getItem(STORAGE_KEY);
         if (!stored) return;
 
         const tasks = JSON.parse(stored);
-        tasks.forEach(({text, completed}) => {
+        tasks.forEach(({ text, completed }) => {
             addTask(text, completed);
         });
 
