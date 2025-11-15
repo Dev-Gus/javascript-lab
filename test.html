@@ -8,32 +8,7 @@
 </head>
 
 <body>
-    <section class="container">
-        <h1 id="heading">Change the page color!</h1>
-
-        <button data-color="red" class="btn">Turn Red</button>
-        <button data-color="green" class="btn">Turn Green</button>
-        <button data-color="blue" class="btn">Turn Blue</button>
-    </section>
-
-    <style>
-        .container {
-            text-align: center;
-        }
-    </style>
-
-    <script>
-        const btnsContainer = document.querySelector('.container');
-        const darkColors = ['red', 'blue', 'green'];
-
-        btnsContainer.addEventListener('click', (e) => {
-            if (e.target.classList.contains('btn')) {
-                const color = e.target.dataset.color;
-                document.body.style.backgroundColor = color;
-                document.body.style.color = darkColors.includes(color) ? 'white' : 'black';
-            }
-        })
-    </script>
+    
 </body>
 
 </html>
