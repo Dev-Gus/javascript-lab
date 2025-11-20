@@ -25,27 +25,15 @@ function padStart(value) {
 function formatTime(time) {
     const date = new Date(time);
 
-    const hours24 = date.getHours();
-    let hours12;
-    let period;
+    const formattedTime = date.toLocaleString('en-US', {
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: true,
+    });
 
-    period = hours24 < 12 ? 'AM' : 'PM';
+    const formattedDate = date.toLocaleDateString('en-GB');
 
-    if (hours24 === 0) {
-        hours12 = 12;
-    } else if (hours24 <= 12) {
-        hours12 = hours24;
-    } else {
-        hours12 = hours24 - 12;
-    }
-
-    const minutes = padStart(date.getMinutes());
-    const day = padStart(date.getDate());
-    const month = padStart(date.getMonth() + 1);
-    const year = date.getFullYear();
-    const hours = padStart(hours12);
-
-    return `${hours}:${minutes} ${period} - ${day}/${month}/${year}`;
+    return `${formattedTime} - ${formattedDate}`;
 }
 
 async function getWeather(city) {
@@ -53,7 +41,8 @@ async function getWeather(city) {
     weatherBox.classList.add('hidden');
 
     try {
-        const geoRes = await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${city}`);
+        const geoRes = await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(city)}`);
+        if (!geoRes.ok) throw new Error('Failed geocoding request');
         const geoData = await geoRes.json();
 
         if (!geoData.results || geoData.results.length === 0) {
