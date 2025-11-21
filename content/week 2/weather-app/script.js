@@ -9,20 +9,18 @@ const wind = document.getElementById('wind');
 const timeEl = document.getElementById('time');
 
 getWeatherBtn.addEventListener('click', () => {
-    const city = cityInput.value.trim();
+    const city = cityInput?.value?.trim();
     if (!city) {
-        statusText.textContent = 'Please enter a city.';
+        statusText?.textContent = 'Please enter a city.';
         return;
     }
 
     getWeather(city);
 });
 
-function padStart(value) {
-    return String(value).padStart(2, '0');
-}
+const padStart = (value) => String(value).padStart(2, '0');
 
-function formatTime(time) {
+const formatTime = (time) => {
     const date = new Date(time);
 
     const formattedTime = date.toLocaleString('en-US', {
@@ -36,37 +34,39 @@ function formatTime(time) {
     return `${formattedTime} - ${formattedDate}`;
 }
 
-async function getWeather(city) {
-    statusText.textContent = 'Loading...';
-    weatherBox.classList.add('hidden');
+async function getWeather(city = "Montevideo") {
+    statusText?.textContent = 'Loading...';
+    weatherBox?.classList.add('hidden');
 
     try {
         const geoRes = await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(city)}`);
         if (!geoRes.ok) throw new Error('Failed geocoding request');
         const geoData = await geoRes.json();
 
-        if (!geoData.results || geoData.results.length === 0) {
-            statusText.textContent = 'City not found.';
+        const firstResult = geoData?.results?.[0] ?? null;
+
+        if (!firstResult) {
+            statusText?.textContent = 'City not found.';
             return;
         }
 
-        const { latitude, longitude, name } = geoData.results[0];
+        const { latitude, longitude, name } = firstResult;
 
         const weatherRes = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current_weather=true`);
-        const weatherData = await weatherRes.json();
+        const weatherData = await weatherRes?.json();
 
-        const { temperature, windspeed, time } = weatherData.current_weather;
+        const { temperature, windspeed, time } = weatherData?.current_weather ?? {};
 
-        cityName.textContent = name;
-        temp.textContent = `${temperature}`;
-        wind.textContent = `${windspeed}`;
-        timeEl.textContent = formatTime(time);
+        cityName?.textContent = name;
+        temp?.textContent = temperature;
+        wind?.textContent = windspeed;
+        timeEl?.textContent = formatTime(time);
 
-        weatherBox.classList.remove('hidden');
-        statusText.textContent = '';
-        cityInput.value = '';
+        weatherBox?.classList.remove('hidden');
+        statusText?.textContent = '';
+        cityInput?.value = '';
     } catch (error) {
         console.error(error);
-        statusText.textContent = 'Error fetching weather data.';
+        statusText?.textContent = 'Error fetching weather data.';
     }
 }
