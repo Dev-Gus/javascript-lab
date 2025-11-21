@@ -1,3 +1,5 @@
+import { formatTime } from "./utils.js";
+
 export async function getCoordinates(city) {
     try {
         const geoRes = await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(city)}`);
@@ -25,8 +27,9 @@ export async function getWeatherData(lat, lon) {
         const weatherData = await weatherRes.json();
 
         const { temperature, windspeed, time } = weatherData?.current_weather ?? {};
+        const timeFormatted = formatTime(time);
     
-        return { temperature, windspeed, time };
+        return { temperature, windspeed, timeFormatted };
     } catch (error) {
         throw error;
     }
