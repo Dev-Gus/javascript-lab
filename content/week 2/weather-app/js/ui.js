@@ -10,12 +10,18 @@ const timeEl = document.getElementById('time');
 const ui = {
     getCityInput: () => cityInput?.value.trim(),
     showLoading: () => {
-        statusText?.textContent = 'Loading...';
+        statusText?.className = '';
+        statusText?.innerHTML = `<div class='loader'></div>`;
         weatherBox?.classList.add('hidden');
     },
     showError: (msg) => {
+        statusText?.className = 'error';
         statusText?.textContent = msg;
-        weatherBox.classList.add('hidden');
+        weatherBox?.classList.add('hidden');
+    },
+    showSuccess: () => {
+        statusText?.className = 'success';
+        statusText?.textContent = '';
     },
     updateWeatherUI: (name, weather) => {
         const { temperature, windspeed, timeFormatted } = weather;
@@ -26,7 +32,7 @@ const ui = {
         timeEl?.textContent = timeFormatted;
 
         weatherBox?.classList.remove('hidden');
-        statusText?.textContent = '';
+        ui.showSuccess();
     }, 
     clearInput: () => {
         cityInput?.value = '';

@@ -19,6 +19,7 @@ getWeatherBtn.addEventListener('click', async () => {
         const weatherData = await getWeatherData(latitude, longitude);
 
         ui.updateWeatherUI(name, weatherData);
+        localStorage.setItem('lastCity', name);
         ui.clearInput();
     } catch (error) {
         console.error(error)
