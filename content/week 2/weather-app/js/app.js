@@ -1,16 +1,16 @@
 import { getCoordinates, getWeatherData } from "./api.js";
 import ui from "./ui.js";
 
-const getWeatherBtn = document.getElementById('getWeatherBtn');
 
-getWeatherBtn.addEventListener('click', async () => {
+
+
+
+
+
+const fetchWeatherData = async (city) => {
     try {
-        ui.showLoading();
-        const city = ui.getCityInput();
-
         if (!city) {
-            ui.showError("Please type a city name");
-            return;
+            throw new Error('Invalid city input');
         }
 
         const cityData = await getCoordinates(city);
@@ -18,11 +18,24 @@ getWeatherBtn.addEventListener('click', async () => {
 
         const weatherData = await getWeatherData(latitude, longitude);
 
-        ui.updateWeatherUI(name, weatherData);
-        localStorage.setItem('lastCity', name);
-        ui.clearInput();
+        return { name, latitude, longitude, weatherData };
     } catch (error) {
-        console.error(error)
-        ui.showError(error.message);
+        throw error;
     }
-});
+}
+
+const renderWeather = (name, weatherData) => {
+    ui.showLoading();
+
+    if (!name) {
+        ui.showError('Please enter a valid city');
+        return;
+    }
+
+    if (!weatherData) {
+        ui.showError('Weather data is not valid');
+        return;
+    }
+
+    ui.updateWeatherUI(name, weatherData);
+}
