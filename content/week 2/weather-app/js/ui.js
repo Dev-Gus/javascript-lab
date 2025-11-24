@@ -2,6 +2,7 @@ export const cityInput = document.getElementById("cityInput");
 const statusText = document.getElementById("status");
 const weatherBox = document.getElementById("weatherResult");
 
+const btn = document.getElementById('getWeatherBtn');
 const cityNameEl = document.getElementById("cityName");
 const tempEl = document.getElementById("temp");
 const windEl = document.getElementById("wind");
@@ -41,6 +42,18 @@ const ui = {
 
   clearInput: () => {
     if (cityInput) cityInput.value = "";
+  },
+
+  disableBtn: () => {
+    btn.disabled = true;
+  }, 
+
+  enableBtn: () => {
+    btn.disabled = false;
+  },
+
+  clearStatus: () => {
+    statusText.textContent = '';
   },
 };
 

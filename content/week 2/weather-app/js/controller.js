@@ -35,6 +35,10 @@ export const initApp = async () => {
     handleWeatherRequest();
   });
 
+  cityInput.addEventListener("input", () => {
+    ui.clearStatus();
+  });
+
   cityInput.addEventListener("keydown", (e) => {
     if (e.key === "Enter") {
       e.preventDefault();
@@ -46,6 +50,7 @@ export const initApp = async () => {
   try {
     const lastCityStored = localStorage.getItem("lastCity");
     if (lastCityStored) {
+      ui.disableBtn();
       ui.showLoading();
       const cityWeather = await fetchWeather(lastCityStored);
       renderWeather(cityWeather);
@@ -53,16 +58,19 @@ export const initApp = async () => {
   } catch (error) {
     console.error(error);
     ui.showError(error.message);
+  } finally {
+    ui.enableBtn();
   }
 };
 
 const handleWeatherRequest = async () => {
   const city = ui.getCityInput();
   if(!city) {
-    ui.showError('Please entera city');
+    ui.showError('Please type a city name');
     return;
   }
 
+  ui.disableBtn();
   ui.showLoading();
   try {
     const cityWeather = await fetchWeather(city);
@@ -73,5 +81,7 @@ const handleWeatherRequest = async () => {
   } catch (error) {
     console.error(error);
     ui.showError(error.message);
+  } finally {
+    ui.enableBtn();
   }
 };

@@ -20,7 +20,7 @@ input {
     margin-bottom: 8px;
 }
 
-button, input {
+button {
     cursor: pointer;
 }
 
