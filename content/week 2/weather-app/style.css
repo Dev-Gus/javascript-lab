@@ -18,6 +18,9 @@ input {
     width: 100%;
     padding: 8px;
     margin-bottom: 8px;
+}
+
+button, input {
     cursor: pointer;
 }
 
