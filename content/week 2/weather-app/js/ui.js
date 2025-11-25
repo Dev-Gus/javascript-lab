@@ -7,25 +7,38 @@ const cityNameEl = document.getElementById("cityName");
 const tempEl = document.getElementById("temp");
 const windEl = document.getElementById("wind");
 const timeEl = document.getElementById("time");
+const statusArea = document.getElementById("statusArea");
 
 const ui = {
   getCityInput: () => cityInput?.value.trim(),
 
-  showLoading: () => {
-    if (statusText) statusText.className = "";
-    if (statusText) statusText.innerHTML = `<div class='loader'></div>`;
-    if (weatherBox) weatherBox.classList.add("hidden");
-  },
+  setStatus: ({ type, message }) => {
+    if (!statusText) return;
+    statusText.classList.remove("loading", "error", "success", "visible");
+    statusText.innerHTML = "";
 
-  showError: (msg) => {
-    if (statusText) statusText.className = "error";
-    if (statusText) statusText.textContent = msg;
-    if (weatherBox) weatherBox.classList.add("hidden");
-  },
+    if (type === "loading") {
+      statusArea.classList.add("loading");
+      statusText.textContent = "";
+      statusText.classList.add("visible");
+      ui.hideWeatherBox();
+      return;
+    }
 
-  showSuccess: () => {
-    if (statusText) statusText.className = "success";
-    if (statusText) statusText.textContent = "";
+    else if (type === "error") {
+      statusArea.classList.remove("loading");
+      statusText.classList.add("error", "visible");
+      statusText.textContent = message;
+      ui.hideWeatherBox();
+      return;
+    }
+
+    else if (type === "success") {
+      statusArea.classList.remove("loading");
+      statusText.innerHTML = "";
+      statusText.classList.remove("visible", "loading");
+      return;
+    }
   },
 
   updateWeatherUI: (name, weather) => {
@@ -36,8 +49,7 @@ const ui = {
     if (windEl) windEl.textContent = windspeed;
     if (timeEl) timeEl.textContent = timeFormatted;
 
-    if (weatherBox) weatherBox.classList.remove("hidden");
-    ui.showSuccess();
+    if (weatherBox) ui.showWeatherBox();
   },
 
   clearInput: () => {
@@ -46,15 +58,27 @@ const ui = {
 
   disableBtn: () => {
     btn.disabled = true;
-  }, 
+  },
 
   enableBtn: () => {
     btn.disabled = false;
   },
 
   clearStatus: () => {
+    if (!statusText) return;
+    statusText.classList.remove("visible", "loading", "error", "success");
     statusText.textContent = '';
   },
+
+  hideWeatherBox: () => {
+    if (!weatherBox) return;
+    weatherBox.classList.remove("visible");
+  },
+
+  showWeatherBox: () => {
+    if (!weatherBox) return;
+    weatherBox.classList.add("visible");
+  }
 };
 
 export default ui;

@@ -22,12 +22,12 @@ export const fetchWeather = async (city) => {
 
 export const renderWeather = (data) => {
   if (!data || !data.weather) {
-    ui.showError("Missing weather data");
+    ui.setStatus({ type: "error", message: "Missing weather data" });
     return;
   }
 
   ui.updateWeatherUI(data.name, data.weather);
-  ui.showSuccess();
+  ui.setStatus({ type: "success" });
 };
 
 export const initApp = async () => {
@@ -51,13 +51,13 @@ export const initApp = async () => {
     const lastCityStored = localStorage.getItem("lastCity");
     if (lastCityStored) {
       ui.disableBtn();
-      ui.showLoading();
+      ui.setStatus({ type: "loading" });
       const cityWeather = await fetchWeather(lastCityStored);
       renderWeather(cityWeather);
     }
   } catch (error) {
     console.error(error);
-    ui.showError(error.message);
+    ui.setStatus({ type: "error", message: error.message });
   } finally {
     ui.enableBtn();
   }
@@ -65,13 +65,13 @@ export const initApp = async () => {
 
 const handleWeatherRequest = async () => {
   const city = ui.getCityInput();
-  if(!city) {
-    ui.showError('Please type a city name');
+  if (!city) {
+    ui.setStatus({ type: "error", message: "Please type a city name" });
     return;
   }
 
   ui.disableBtn();
-  ui.showLoading();
+  ui.setStatus({ type: "loading" });
   try {
     const cityWeather = await fetchWeather(city);
     renderWeather(cityWeather);
@@ -80,7 +80,7 @@ const handleWeatherRequest = async () => {
     ui.clearInput();
   } catch (error) {
     console.error(error);
-    ui.showError(error.message);
+    ui.setStatus({ type: "error", message: error.message });
   } finally {
     ui.enableBtn();
   }

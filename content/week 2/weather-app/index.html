@@ -13,9 +13,12 @@
         <input type="text" id="cityInput" placeholder="Enter a city...">
         <button id="getWeatherBtn">Get Weather</button>
 
-        <p id="status"></p>
+        <div id="statusArea">
+            <div id="loader"></div>
+            <p id="status" class="status"></p>
+        </div>
 
-        <section id="weatherResult" class="hidden">
+        <section id="weatherResult" class="weather-box">
             <h2 id="cityName"></h2>
             <p><strong>Temperature:</strong> <span id="temp"></span>°C</p>
             <p><strong>Windspeed:</strong> <span id="wind"></span> km/h</p>
