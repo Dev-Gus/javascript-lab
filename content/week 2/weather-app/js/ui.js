@@ -2,6 +2,7 @@ export const cityInput = document.getElementById("cityInput");
 const statusText = document.getElementById("status");
 const weatherBox = document.getElementById("weatherResult");
 const retryBtn = document.getElementById("retryBtn");
+const weatherWarning = document.getElementById("weatherWarning");
 
 const btn = document.getElementById('getWeatherBtn');
 const cityNameEl = document.getElementById("cityName");
@@ -89,6 +90,22 @@ const ui = {
   updateWeatherIcon: (emoji, description) => {
     if (weatherIconEl) weatherIconEl.textContent = emoji;
     if (conditionEl) conditionEl.textContent = description;
+  },
+
+  /**
+   * Show or hide precipitation warning
+   * @param {boolean} hasWarning - true to show warning, false to hide
+   * @param {string} message - The warning message to display
+   */
+  showPrecipitationWarning: (hasWarning, message = '') => {
+    if (!weatherWarning) return;
+    
+    if (hasWarning) {
+      weatherWarning.textContent = message;
+      weatherWarning.classList.remove("hidden");
+    } else {
+      weatherWarning.classList.add("hidden");
+    }
   },
 
   clearInput: () => {

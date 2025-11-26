@@ -29,14 +29,15 @@ export async function getWeatherData(lat, lon) {
     if (!navigator.onLine) throw new Error("No internet connection");
     
     try {
-        const weatherRes = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true&weather_code=true`);
+        const weatherRes = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true`);
         if(!weatherRes.ok) throw new Error('Failed to fetch weather data');
         const weatherData = await weatherRes.json();
 
-        const { temperature, windspeed, time, weather_code } = weatherData?.current_weather ?? {};
+        const currentWeather = weatherData?.current_weather ?? {};
+        const { temperature, windspeed, time, weathercode } = currentWeather;
         const timeFormatted = formatTime(time);
     
-        return { temperature, windspeed, timeFormatted, weather_code };
+        return { temperature, windspeed, timeFormatted, weathercode };
     } catch (error) {
         throw error;
     }

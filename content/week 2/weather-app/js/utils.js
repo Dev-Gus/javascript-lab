@@ -75,3 +75,25 @@ export const getWeatherIcon = (code) => {
     // Return matched weather or default to clear
     return weatherMap[code] || { emoji: '🌤️', description: 'Unknown' };
 };
+
+/**
+ * Check if the weather code represents precipitation (rain, snow, drizzle, etc.)
+ * Useful for determining if user should carry an umbrella
+ * @param {number} code - WMO weather code
+ * @returns {boolean} true if code represents precipitation, false otherwise
+ */
+export const isPrecipitation = (code) => {
+    // Drizzle codes: 51-57
+    // Rain codes: 61-67
+    // Snow codes: 71-86
+    // Showers: 80-82, 85-86
+    const precipitationCodes = [
+        51, 53, 55, 56, 57,  // Drizzle
+        61, 63, 65, 66, 67,  // Rain
+        71, 73, 75, 77,      // Snow
+        80, 81, 82,          // Rain showers
+        85, 86,              // Snow showers
+    ];
+    
+    return precipitationCodes.includes(code);
+};

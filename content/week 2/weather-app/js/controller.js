@@ -1,6 +1,6 @@
 import ui from "./ui.js";
 import { getCoordinates, getWeatherData } from "./api.js";
-import { getWeatherIcon } from "./utils.js";
+import { getWeatherIcon, isPrecipitation } from "./utils.js";
 import { cityInput } from "./ui.js";
 
 const getWeatherBtn = document.getElementById("getWeatherBtn");
@@ -72,8 +72,15 @@ export const renderWeather = (data) => {
   ui.updateWeatherUI(data.name, data.weather);
 
   // Get and display weather icon
-  const { emoji, description } = getWeatherIcon(data.weather.weather_code);
+  const { emoji, description } = getWeatherIcon(data.weather.weathercode);
   ui.updateWeatherIcon(emoji, description);
+
+  // Check if it's raining/snowing and show warning
+  if (isPrecipitation(data.weather.weathercode)) {
+    ui.showPrecipitationWarning(true, '💧 Bring an umbrella or rain jacket!');
+  } else {
+    ui.showPrecipitationWarning(false);
+  }
 
   ui.setStatus({ type: "success" });
 };

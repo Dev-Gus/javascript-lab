@@ -408,6 +408,26 @@ button {
   font-size: 16px;
 }
 
+/* Weather warning styling */
+.weather-warning {
+  margin-top: var(--spacing-md);
+  padding: var(--spacing-md);
+  background: linear-gradient(135deg, rgba(255, 107, 53, 0.1) 0%, rgba(253, 216, 53, 0.1) 100%);
+  border-left: 4px solid var(--color-accent);
+  border-radius: var(--radius-md);
+  color: var(--color-accent);
+  font-weight: 600;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  animation: slideIn 0.3s ease-out;
+}
+
+.weather-warning.hidden {
+  display: none;
+}
+
 /* ==========================================
    RESPONSIVE DESIGN
    ========================================== */
