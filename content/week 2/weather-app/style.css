@@ -72,6 +72,29 @@
   }
 }
 
+/* Dark mode toggle via data-theme attribute (for manual toggle) */
+:root[data-theme="dark"] {
+  --color-primary: #0D47A1;
+  --color-primary-dark: #051C80;
+  --color-primary-light: #1565C0;
+  --color-accent: #00BCD4;
+  --color-accent-dark: #0097A7;
+  
+  --bg-primary: #263238;
+  --bg-secondary: #37474F;
+  --bg-tertiary: #455A64;
+  
+  --text-primary: #ECEFF1;
+  --text-secondary: #B0BEC5;
+  --text-light: #78909C;
+  
+  --border-color: #546E7A;
+}
+
+:root[data-theme="dark"] h1,  :root[data-theme="dark"] .weather-box span{
+  color: var(--text-primary);
+}
+
 /* ==========================================
    GLOBAL STYLES
    ========================================== */
@@ -88,7 +111,7 @@ html {
 
 body {
   font-family: var(--font-body);
-  background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-tertiary) 100%);
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-accent) 100%);
   color: var(--text-primary);
   display: flex;
   justify-content: center;
@@ -109,6 +132,7 @@ h1 {
   margin: 0 0 var(--spacing-lg) 0;
   color: var(--color-primary);
   letter-spacing: -0.5px;
+  text-align: center;
 }
 
 h2 {
@@ -143,6 +167,56 @@ strong {
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-lg);
   animation: slideUp 0.4s ease-out;
+}
+
+/* Header with dark mode toggle */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-lg);
+}
+
+.header h1 {
+  margin: 0;
+  flex: 1;
+}
+
+.dark-mode-toggle {
+  background: transparent;
+  border: 2px solid var(--color-primary);
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--transition-fast);
+  flex-shrink: 0;
+}
+
+.dark-mode-toggle:hover {
+  background: rgba(30, 136, 229, 0.1);
+  transform: scale(1.1);
+}
+
+.dark-mode-toggle:active {
+  transform: scale(0.95);
+}
+
+.toggle-icon {
+  display: inline-block;
+}
+
+/* Dark mode styles for toggle button */
+:root[data-theme="dark"] .dark-mode-toggle {
+  border-color: var(--color-accent);
+}
+
+:root[data-theme="dark"] .dark-mode-toggle:hover {
+  background: rgba(0, 188, 212, 0.1);
 }
 
 @keyframes slideUp {
@@ -378,9 +452,9 @@ button {
   border-bottom: 2px solid var(--border-color);
 }
 
-.weather-icon {
-  font-size: 48px;
-  display: inline-block;
+.weather-box .weather-icon {
+  font-size: 2rem;
+  display: block;
   animation: float 3s ease-in-out infinite;
 }
 
@@ -391,7 +465,7 @@ button {
 
 .weather-box p {
   display: flex;
-  justify-content: space-between;
+  flex-wrap: wrap;
   align-items: center;
   padding: var(--spacing-sm) 0;
   font-size: 15px;
@@ -402,10 +476,21 @@ button {
   border-bottom: none;
 }
 
+.weather-box strong {
+  flex: 1;
+}
+
 .weather-box span {
   color: var(--color-primary);
   font-weight: 600;
   font-size: 16px;
+}
+
+/* Unit spans: °C, km/h - reduce spacing */
+.weather-box p > span:last-child {
+  margin-left: 2px;
+  font-size: 14px;
+  font-weight: 500;
 }
 
 /* Weather warning styling */
@@ -456,7 +541,7 @@ button {
   }
 
   .weather-icon {
-    font-size: 56px;
+    font-size: 3.5rem;
   }
 }
 
@@ -485,6 +570,6 @@ button {
   }
 
   .weather-icon {
-    font-size: 64px;
+    font-size: 4.5rem;
   }
 }
