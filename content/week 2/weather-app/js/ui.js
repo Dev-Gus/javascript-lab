@@ -11,6 +11,9 @@ const tempEl = document.getElementById("temp");
 const conditionEl = document.getElementById("condition");
 const windEl = document.getElementById("wind");
 const timeEl = document.getElementById("time");
+const feelsLikeEl = document.getElementById("feelsLike");
+const humidityEl = document.getElementById("humidity");
+const uvIndexEl = document.getElementById("uvIndex");
 const statusArea = document.getElementById("statusArea");
 
 /**
@@ -67,11 +70,14 @@ const ui = {
   },
 
   updateWeatherUI: (name, weather) => {
-    const { temperature, windspeed, timeFormatted, weather_code } = weather;
+    const { temperature, feelsLike, humidity, windspeed, timeFormatted, uvIndex } = weather;
 
     if (cityNameEl) cityNameEl.textContent = name;
-    if (tempEl) tempEl.textContent = temperature;
-    if (windEl) windEl.textContent = windspeed;
+    if (tempEl) tempEl.textContent = temperature.toFixed(1);
+    if (feelsLikeEl) feelsLikeEl.textContent = feelsLike.toFixed(1);
+    if (humidityEl) humidityEl.textContent = humidity;
+    if (windEl) windEl.textContent = windspeed.toFixed(1);
+    if (uvIndexEl) uvIndexEl.textContent = uvIndex.toFixed(1);
     if (timeEl) timeEl.textContent = timeFormatted;
 
     // Update weather icon and condition (requires getWeatherIcon from utils)
