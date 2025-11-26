@@ -14,8 +14,14 @@
         <button id="getWeatherBtn">Get Weather</button>
 
         <div id="statusArea">
-            <div id="loader"></div>
-            <p id="status" class="status"></p>
+            <svg id="loader" class="spinner" viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="25" cy="25" r="20" fill="none" stroke="#e0e0e0" stroke-width="3" />
+                <circle cx="25" cy="25" r="20" fill="none" stroke="#1976d2" stroke-width="3" stroke-dasharray="31.4 94.2" stroke-linecap="round" />
+            </svg>
+            <div id="statusContent">
+                <p id="status" class="status"></p>
+                <button id="retryBtn" class="retry-btn hidden">Retry</button>
+            </div>
         </div>
 
         <section id="weatherResult" class="weather-box">
