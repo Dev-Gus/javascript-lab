@@ -22,21 +22,38 @@ const statusArea = document.getElementById("statusArea");
 let lastAttemptedCity = "";
 
 const ui = {
+  /**
+   * Get the current value from the city search input field
+   * @returns {string} City name trimmed of whitespace
+   */
   getCityInput: () => cityInput?.value.trim(),
 
   /**
-   * Set the last city that was attempted (before error)
-   * This allows the retry button to know what to search for
+   * Store the last city that was attempted in a search (used for retry button)
+   * @param {string} city - City name to store for retry functionality
    */
   setLastAttemptedCity: (city) => {
     lastAttemptedCity = city;
   },
 
   /**
-   * Get the last attempted city (for retry functionality)
+   * Retrieve the last attempted city search (for retry button functionality)
+   * @returns {string} Previously searched city name
    */
   getLastAttemptedCity: () => lastAttemptedCity,
 
+  /**
+   * Update application status display (loading, error, or success state)
+   * Manages UI visibility, spinner animation, and message display
+   * @param {Object} options - Status configuration
+   * @param {string} options.type - Status type: "loading" | "error" | "success"
+   * @param {string} [options.message] - Error message (required when type is "error")
+   * 
+   * @example
+   * ui.setStatus({ type: "loading" });
+   * ui.setStatus({ type: "error", message: "City not found" });
+   * ui.setStatus({ type: "success" });
+   */
   setStatus: ({ type, message }) => {
     if (!statusText) return;
     statusText.classList.remove("loading", "error", "success", "visible");
@@ -69,6 +86,18 @@ const ui = {
     }
   },
 
+  /**
+   * Update the weather display with current metrics
+   * Displays temperature, feels-like, humidity, wind speed, UV index, and time
+   * @param {string} name - City name to display as header
+   * @param {Object} weather - Weather data object from API
+   * @param {number} weather.temperature - Current temperature in Celsius
+   * @param {number} weather.feelsLike - Feels-like/apparent temperature in Celsius
+   * @param {number} weather.humidity - Relative humidity percentage (0-100)
+   * @param {number} weather.windspeed - Wind speed in km/h
+   * @param {number} weather.uvIndex - UV index value
+   * @param {string} weather.timeFormatted - Pre-formatted time string (HH:MM AM/PM - DD/MM/YYYY)
+   */
   updateWeatherUI: (name, weather) => {
     const { temperature, feelsLike, humidity, windspeed, timeFormatted, uvIndex } = weather;
 
@@ -79,9 +108,8 @@ const ui = {
     if (windEl) windEl.textContent = windspeed.toFixed(1);
     if (uvIndexEl) uvIndexEl.textContent = uvIndex.toFixed(1);
     if (timeEl) timeEl.textContent = timeFormatted;
-
     // Update weather icon and condition (requires getWeatherIcon from utils)
-    if (weatherIconEl && conditionEl && weather_code !== undefined) {
+    if (weatherIconEl && conditionEl) {
       // Dynamic import of getWeatherIcon will happen in controller
       // This is set by controller.updateWeatherWithIcon()
     }
@@ -90,8 +118,10 @@ const ui = {
   },
 
   /**
-   * Update weather icon and condition description
-   * Called separately from updateWeatherUI to handle async import if needed
+   * Update the weather icon emoji and condition description text
+   * Called separately from updateWeatherUI to display visual weather representation
+   * @param {string} emoji - Weather emoji (e.g., "☀️", "🌧️", "❄️")
+   * @param {string} description - Weather condition description (e.g., "Clear Sky", "Rainy")
    */
   updateWeatherIcon: (emoji, description) => {
     if (weatherIconEl) weatherIconEl.textContent = emoji;
@@ -99,9 +129,13 @@ const ui = {
   },
 
   /**
-   * Show or hide precipitation warning
-   * @param {boolean} hasWarning - true to show warning, false to hide
-   * @param {string} message - The warning message to display
+   * Show or hide the precipitation warning message (umbrella emoji)
+   * @param {boolean} hasWarning - True to show warning, false to hide
+   * @param {string} [message=''] - Warning message to display (required when hasWarning is true)
+   * 
+   * @example
+   * ui.showPrecipitationWarning(true, "☔ Precipitation expected!");
+   * ui.showPrecipitationWarning(false);
    */
   showPrecipitationWarning: (hasWarning, message = '') => {
     if (!weatherWarning) return;
@@ -114,29 +148,53 @@ const ui = {
     }
   },
 
+  /**
+   * Clear the city input field
+   * Used after successful weather fetch to reset form for next search
+   */
   clearInput: () => {
     if (cityInput) cityInput.value = "";
   },
 
+  /**
+   * Disable the "Get Weather" button
+   * Prevents multiple simultaneous API requests during loading
+   */
   disableBtn: () => {
     btn.disabled = true;
   },
 
+  /**
+   * Enable the "Get Weather" button
+   * Re-enables after API request completes
+   */
   enableBtn: () => {
     btn.disabled = false;
   },
 
+  /**
+   * Clear the status message display
+   * Removes visible status messages and animations
+   */
   clearStatus: () => {
     if (!statusText) return;
     statusText.classList.remove("visible", "loading", "error", "success");
     statusText.textContent = '';
   },
 
+  /**
+   * Hide the weather results card
+   * Removes the visible class to trigger fade-out animation
+   */
   hideWeatherBox: () => {
     if (!weatherBox) return;
     weatherBox.classList.remove("visible");
   },
 
+  /**
+   * Show the weather results card with fade-in animation
+   * Adds visible class to trigger CSS animation
+   */
   showWeatherBox: () => {
     if (!weatherBox) return;
     weatherBox.classList.add("visible");

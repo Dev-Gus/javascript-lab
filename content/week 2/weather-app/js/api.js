@@ -1,5 +1,17 @@
 import { formatTime } from "./utils.js";
 
+/**
+ * Get geographic coordinates (latitude, longitude) for a city name
+ * Uses Open-Meteo Geocoding API to find location data
+ * 
+ * @param {string} city - City name to search for (e.g., "London", "New York")
+ * @returns {Promise<{latitude: number, longitude: number, name: string}>} Location coordinates and official name
+ * @throws {Error} "No internet connection" if offline, "City not found" if city doesn't exist
+ * 
+ * @example
+ * const { latitude, longitude, name } = await getCoordinates("London");
+ * console.log(`${name}: ${latitude}, ${longitude}`);
+ */
 export async function getCoordinates(city) {
     if (!navigator.onLine) throw new Error("No internet connection");
     
@@ -25,11 +37,24 @@ export async function getCoordinates(city) {
     }
 }
 
+/**
+ * Get current weather data for a specific location
+ * Fetches temperature, humidity, wind speed, UV index, and weather condition
+ * 
+ * @param {number} lat - Latitude coordinate
+ * @param {number} lon - Longitude coordinate
+ * @returns {Promise<{temperature: number, feelsLike: number, humidity: number, windspeed: number, weathercode: number, uvIndex: number, timeFormatted: string}>} Current weather data
+ * @throws {Error} "Failed to fetch weather data" if API request fails
+ * 
+ * @example
+ * const weather = await getWeatherData(51.5074, -0.1278); // London
+ * console.log(`Temperature: ${weather.temperature}°C, Feels like: ${weather.feelsLike}°C`);
+ */
 export async function getWeatherData(lat, lon) {
     if (!navigator.onLine) throw new Error("No internet connection");
     
     try {
-        // Add current and additional metrics to the API request
+        // Request current weather with multiple metrics from Open-Meteo API
         const weatherRes = await fetch(
             `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,apparent_temperature,relative_humidity_2m,weather_code,wind_speed_10m,uv_index`
         );

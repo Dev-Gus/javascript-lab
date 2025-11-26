@@ -114,8 +114,9 @@ body {
   background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-accent) 100%);
   color: var(--text-primary);
   display: flex;
-  justify-content: center;
-  align-items: flex-start;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
   min-height: 100vh;
   padding: var(--spacing-md);
   transition: background-color var(--transition-normal), color var(--transition-normal);
@@ -511,6 +512,52 @@ button {
 
 .weather-warning.hidden {
   display: none;
+}
+
+/* ==========================================
+   FOOTER & API ATTRIBUTION
+   ========================================== */
+
+.api-footer {
+  margin-top: var(--spacing-3xl);
+  padding: var(--spacing-lg);
+  text-align: center;
+}
+
+.api-footer p {
+  margin: 0;
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+}
+
+.api-footer p + p {
+  margin-top: var(--spacing-xs);
+}
+
+.footer-credit {
+  font-size: 1rem;
+  color: var(--text-light);
+}
+
+.api-footer a{
+  color: var(--color-primary);
+  text-decoration: none;
+  font-weight: 600;
+  transition: color var(--transition-fast);
+}
+
+.api-footer a:hover {
+  color: var(--color-primary-dark);
+}
+
+/* Dark mode footer */
+
+:root[data-theme="dark"] .api-footer a {
+  color: var(--color-primary-light);
+}
+
+:root[data-theme="dark"] .api-footer a:hover {
+  color: #64B5F6;
 }
 
 /* ==========================================

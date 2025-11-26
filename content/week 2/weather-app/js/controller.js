@@ -44,6 +44,18 @@ export const fetchWeather = async (city) => {
       throw new Error("Input must be a city name");
     }
 
+    // Validate input: max 100 characters, only letters, spaces, and hyphens
+    const MAX_CITY_LENGTH = 100;
+    if (city.length > MAX_CITY_LENGTH) {
+      throw new Error(`City name is too long (max ${MAX_CITY_LENGTH} characters)`);
+    }
+
+    // Allow letters (including accented), spaces, hyphens, and apostrophes (e.g., "São Paulo", "Las Vegas", "Saint-Étienne")
+    const validCityPattern = /^[a-zA-ZÀ-ÿ\s\-']+$/;
+    if (!validCityPattern.test(city)) {
+      throw new Error("City name can only contain letters, spaces, hyphens, and apostrophes");
+    }
+
     // Store this city as "last attempted" in case error occurs
     ui.setLastAttemptedCity(city);
 
