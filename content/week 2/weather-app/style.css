@@ -1,214 +1,470 @@
-/* Mobile-first responsive design */
-body {
-    font-family: Arial, sans-serif;
-    background: #e3f2fd;
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    min-height: 100vh;
-    padding: 20px;
+/* ==========================================
+   DESIGN SYSTEM: CSS VARIABLES
+   ========================================== */
+
+:root {
+  /* Light Mode (Default - Option A: Warm Blue & Orange) */
+  --color-primary: #1E88E5;
+  --color-primary-dark: #1565C0;
+  --color-primary-light: #42A5F5;
+  --color-accent: #FF6B35;
+  --color-accent-dark: #E55100;
+  --color-success: #43A047;
+  --color-error: #E53935;
+  --color-warning: #FDD835;
+  
+  --bg-primary: #FFFFFF;
+  --bg-secondary: #F5F7FA;
+  --bg-tertiary: #ECEFF1;
+  
+  --text-primary: #2C3E50;
+  --text-secondary: #546E7A;
+  --text-light: #90A4AE;
+  
+  --border-color: #E0E0E0;
+  
+  /* Typography */
+  --font-heading: 'Poppins', sans-serif;
+  --font-body: 'Inter', sans-serif;
+  
+  /* Spacing (8px base unit) */
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+  --spacing-2xl: 48px;
+  
+  /* Shadows */
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.08);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.12);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.16);
+  
+  /* Transitions */
+  --transition-fast: 0.2s ease;
+  --transition-normal: 0.3s ease;
+  --transition-slow: 0.5s ease;
+  
+  /* Border Radius */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
 }
 
-.app {
-    background: #fff;
-    padding: 20px;
-    width: 100%;
-    max-width: 480px; 
-    border-radius: 8px;
-    box-shadow: 0px 3px 10px rgba(0,0,0,0.1);
+/* Dark Mode (Option B: Deep Blue & Cyan) - Ready for toggle later */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-primary: #0D47A1;
+    --color-primary-dark: #051C80;
+    --color-primary-light: #1565C0;
+    --color-accent: #00BCD4;
+    --color-accent-dark: #0097A7;
+    
+    --bg-primary: #263238;
+    --bg-secondary: #37474F;
+    --bg-tertiary: #455A64;
+    
+    --text-primary: #ECEFF1;
+    --text-secondary: #B0BEC5;
+    --text-light: #78909C;
+    
+    --border-color: #546E7A;
+  }
 }
+
+/* ==========================================
+   GLOBAL STYLES
+   ========================================== */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-body);
+  background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-tertiary) 100%);
+  color: var(--text-primary);
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 100vh;
+  padding: var(--spacing-md);
+  transition: background-color var(--transition-normal), color var(--transition-normal);
+}
+
+/* ==========================================
+   TYPOGRAPHY
+   ========================================== */
 
 h1 {
-    font-size: 24px;
-    margin: 0 0 20px 0;
+  font-family: var(--font-heading);
+  font-size: 32px;
+  font-weight: 800;
+  margin: 0 0 var(--spacing-lg) 0;
+  color: var(--color-primary);
+  letter-spacing: -0.5px;
 }
 
+h2 {
+  font-family: var(--font-heading);
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+p {
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--text-secondary);
+  margin: var(--spacing-sm) 0;
+}
+
+strong {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+/* ==========================================
+   MAIN APP CONTAINER
+   ========================================== */
+
+.app {
+  background: var(--bg-primary);
+  padding: var(--spacing-xl);
+  width: 100%;
+  max-width: 480px;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  animation: slideUp 0.4s ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ==========================================
+   INPUTS & BUTTONS
+   ========================================== */
+
 input {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 10px;
-    font-size: 16px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    box-sizing: border-box;
+  width: 100%;
+  padding: var(--spacing-md);
+  margin-bottom: var(--spacing-md);
+  font-family: var(--font-body);
+  font-size: 16px;
+  border: 2px solid var(--border-color);
+  border-radius: var(--radius-md);
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  transition: all var(--transition-fast);
+}
+
+input:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(30, 136, 229, 0.1);
+}
+
+input::placeholder {
+  color: var(--text-light);
 }
 
 button {
-    cursor: pointer;
-    width: 100%;
-    padding: 10px;
-    background: #1976d2;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    font-size: 16px;
-    font-weight: bold;
-    transition: background 0.2s ease;
+  cursor: pointer;
+  font-family: var(--font-body);
+  border: none;
+  border-radius: var(--radius-md);
+  font-weight: 600;
+  font-size: 15px;
+  transition: all var(--transition-fast);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
-button:hover {
-    background: #1565c0;
+#getWeatherBtn {
+  width: 100%;
+  padding: var(--spacing-md);
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
+  color: white;
+  margin-bottom: var(--spacing-lg);
+  box-shadow: var(--shadow-md);
 }
 
-button:disabled {
-    background: #ccc;
-    cursor: not-allowed;
+#getWeatherBtn:hover {
+  background: linear-gradient(135deg, var(--color-primary-dark) 0%, var(--color-primary) 100%);
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-2px);
 }
+
+#getWeatherBtn:active {
+  transform: translateY(0);
+}
+
+#getWeatherBtn:disabled {
+  background: var(--text-light);
+  cursor: not-allowed;
+  box-shadow: var(--shadow-sm);
+  transform: none;
+}
+
+/* ==========================================
+   LOADER & STATUS
+   ========================================== */
 
 #loader {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%) scale(0.85);
-    opacity: 0;
-    width: 50px;
-    height: 50px;
-    pointer-events: none;
-    transition: opacity .25s ease, transform .25s cubic-bezier(.2, .9, .3, 1);
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%) scale(0.85);
+  opacity: 0;
+  width: 50px;
+  height: 50px;
+  pointer-events: none;
+  transition: opacity var(--transition-normal), transform var(--transition-normal) cubic-bezier(.2, .9, .3, 1);
+}
+
+.spinner circle:first-child {
+  stroke: var(--border-color);
 }
 
 .spinner circle:last-child {
-    animation: spin 1.2s linear infinite;
-    transform-origin: 25px 25px;
+  stroke: var(--color-primary);
+  animation: spin 1.2s linear infinite;
+  transform-origin: 25px 25px;
 }
 
 @keyframes spin {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
 
 #statusArea {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-height: 60px;
-    margin: 10px 0;
-    position: relative;
-    gap: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 60px;
+  margin: var(--spacing-lg) 0;
+  position: relative;
+  gap: var(--spacing-md);
 }
 
 #statusContent {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
-    width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-md);
+  width: 100%;
 }
 
 #statusArea.loading #loader {
-    opacity: 1;
-    transform: translate(-50%, -50%) scale(1);
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
 }
 
 #status {
-    font-weight: bold;
-    text-align: center;
-    margin: 0;
+  font-weight: 600;
+  text-align: center;
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.5;
 }
 
 #status.error {
-    color: #d32f2f;
+  color: var(--color-error);
 }
 
 #status.success {
-    color: #2e7d32;
+  color: var(--color-success);
+}
+
+.status.visible {
+  opacity: 1;
+  animation: fadeIn var(--transition-normal);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
 /* Retry button styling */
 .retry-btn {
-    background: #ff9800 !important;
-    padding: 8px 20px !important;
-    width: auto !important;
-    font-size: 14px !important;
-    transition: all 0.2s ease;
-    animation: slideIn 0.3s ease-out;
-}
-
-.retry-btn.hidden {
-    display: none;
+  background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-accent-dark) 100%);
+  color: white;
+  padding: var(--spacing-sm) var(--spacing-lg);
+  width: auto;
+  font-size: 13px;
+  font-weight: 600;
+  box-shadow: var(--shadow-md);
+  animation: slideIn 0.3s ease-out;
 }
 
 .retry-btn:hover {
-    background: #f57c00 !important;
-    transform: scale(1.05);
+  background: linear-gradient(135deg, var(--color-accent-dark) 0%, var(--color-accent) 100%);
+  box-shadow: var(--shadow-lg);
+  transform: scale(1.05);
+}
+
+.retry-btn:active {
+  transform: scale(0.98);
+}
+
+.retry-btn.hidden {
+  display: none;
 }
 
 .retry-btn:disabled {
-    background: #ccc !important;
-    cursor: not-allowed;
-    transform: scale(1);
+  background: var(--text-light);
+  cursor: not-allowed;
+  transform: scale(1);
+  box-shadow: var(--shadow-sm);
 }
 
 @keyframes slideIn {
-    from {
-        opacity: 0;
-        transform: translateY(-10px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-.status, .weather-box {
+  from {
     opacity: 0;
-    transition: opacity .3s ease, transform .3s ease;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-.status.visible {
-    opacity: 1;
-}
+/* ==========================================
+   WEATHER DISPLAY CARD
+   ========================================== */
 
 .weather-box {
-    pointer-events: none;
-    transform: translateY(5px);
+  opacity: 0;
+  transition: opacity var(--transition-normal), transform var(--transition-normal);
+  pointer-events: none;
+  transform: translateY(10px);
+  background: linear-gradient(135deg, rgba(30, 136, 229, 0.05) 0%, rgba(255, 107, 53, 0.05) 100%);
+  padding: var(--spacing-lg);
+  border-radius: var(--radius-lg);
+  border: 2px solid var(--border-color);
+  margin-top: var(--spacing-md);
 }
 
 .weather-box.visible {
-    opacity: 1;
-    pointer-events: auto;
-    transform: translateY(0);
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+  background: linear-gradient(135deg, rgba(30, 136, 229, 0.08) 0%, rgba(255, 107, 53, 0.08) 100%);
 }
 
-/* ========== TABLET BREAKPOINT (481px - 768px) ========== */
+.weather-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--spacing-lg);
+  padding-bottom: var(--spacing-md);
+  border-bottom: 2px solid var(--border-color);
+}
+
+.weather-icon {
+  font-size: 48px;
+  display: inline-block;
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+.weather-box p {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--spacing-sm) 0;
+  font-size: 15px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.weather-box p:last-child {
+  border-bottom: none;
+}
+
+.weather-box span {
+  color: var(--color-primary);
+  font-weight: 600;
+  font-size: 16px;
+}
+
+/* ==========================================
+   RESPONSIVE DESIGN
+   ========================================== */
+
 @media (min-width: 481px) {
-    .app {
-        max-width: 500px;
-        padding: 30px;
-    }
+  .app {
+    max-width: 500px;
+    padding: var(--spacing-2xl);
+  }
 
-    h1 {
-        font-size: 28px;
-    }
+  h1 {
+    font-size: 36px;
+  }
 
-    input, button {
-        padding: 12px;
-        font-size: 16px;
-    }
+  h2 {
+    font-size: 28px;
+  }
+
+  input, #getWeatherBtn {
+    padding: var(--spacing-md);
+    font-size: 16px;
+  }
+
+  .weather-box {
+    padding: var(--spacing-2xl);
+  }
+
+  .weather-icon {
+    font-size: 56px;
+  }
 }
 
-/* ========== DESKTOP BREAKPOINT (769px+) ========== */
 @media (min-width: 769px) {
-    body {
-        padding: 40px 20px;
-    }
+  body {
+    padding: var(--spacing-xl);
+  }
 
-    .app {
-        max-width: 600px;
-        padding: 40px;
-    }
+  .app {
+    max-width: 600px;
+  }
 
-    h1 {
-        font-size: 32px;
-    }
+  h1 {
+    font-size: 40px;
+    margin-bottom: var(--spacing-2xl);
+  }
 
-    input, button {
-        padding: 12px 16px;
-        font-size: 16px;
-    }
+  input {
+    padding: var(--spacing-md);
+    font-size: 16px;
+  }
 
-    #weatherResult section {
-        font-size: 18px;
-    }
+  .weather-box {
+    padding: var(--spacing-2xl);
+    border-width: 3px;
+  }
+
+  .weather-icon {
+    font-size: 64px;
+  }
 }

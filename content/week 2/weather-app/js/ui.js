@@ -5,7 +5,9 @@ const retryBtn = document.getElementById("retryBtn");
 
 const btn = document.getElementById('getWeatherBtn');
 const cityNameEl = document.getElementById("cityName");
+const weatherIconEl = document.getElementById("weatherIcon");
 const tempEl = document.getElementById("temp");
+const conditionEl = document.getElementById("condition");
 const windEl = document.getElementById("wind");
 const timeEl = document.getElementById("time");
 const statusArea = document.getElementById("statusArea");
@@ -64,14 +66,29 @@ const ui = {
   },
 
   updateWeatherUI: (name, weather) => {
-    const { temperature, windspeed, timeFormatted } = weather;
+    const { temperature, windspeed, timeFormatted, weather_code } = weather;
 
     if (cityNameEl) cityNameEl.textContent = name;
     if (tempEl) tempEl.textContent = temperature;
     if (windEl) windEl.textContent = windspeed;
     if (timeEl) timeEl.textContent = timeFormatted;
 
+    // Update weather icon and condition (requires getWeatherIcon from utils)
+    if (weatherIconEl && conditionEl && weather_code !== undefined) {
+      // Dynamic import of getWeatherIcon will happen in controller
+      // This is set by controller.updateWeatherWithIcon()
+    }
+
     if (weatherBox) ui.showWeatherBox();
+  },
+
+  /**
+   * Update weather icon and condition description
+   * Called separately from updateWeatherUI to handle async import if needed
+   */
+  updateWeatherIcon: (emoji, description) => {
+    if (weatherIconEl) weatherIconEl.textContent = emoji;
+    if (conditionEl) conditionEl.textContent = description;
   },
 
   clearInput: () => {

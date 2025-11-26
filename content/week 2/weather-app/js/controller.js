@@ -1,5 +1,6 @@
 import ui from "./ui.js";
 import { getCoordinates, getWeatherData } from "./api.js";
+import { getWeatherIcon } from "./utils.js";
 import { cityInput } from "./ui.js";
 
 const getWeatherBtn = document.getElementById("getWeatherBtn");
@@ -69,6 +70,11 @@ export const renderWeather = (data) => {
   }
 
   ui.updateWeatherUI(data.name, data.weather);
+
+  // Get and display weather icon
+  const { emoji, description } = getWeatherIcon(data.weather.weather_code);
+  ui.updateWeatherIcon(emoji, description);
+
   ui.setStatus({ type: "success" });
 };
 

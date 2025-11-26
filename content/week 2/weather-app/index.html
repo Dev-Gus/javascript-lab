@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Weather App</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -25,8 +29,12 @@
         </div>
 
         <section id="weatherResult" class="weather-box">
-            <h2 id="cityName"></h2>
+            <div class="weather-header">
+                <h2 id="cityName"></h2>
+                <span id="weatherIcon" class="weather-icon"></span>
+            </div>
             <p><strong>Temperature:</strong> <span id="temp"></span>°C</p>
+            <p><strong>Condition:</strong> <span id="condition"></span></p>
             <p><strong>Windspeed:</strong> <span id="wind"></span> km/h</p>
             <p><strong>Time:</strong> <span id="time"></span></p>
         </section>
