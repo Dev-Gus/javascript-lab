@@ -42,14 +42,14 @@ console.log(y); // ReferenceError
 
 🧩 Key Insight
 
-• var => function-scoped, overriden inside blocks.
-• let => block-scoped, inner variable doesn't affect outer one.
+• var => function-scoped, overriden inside blocks. // deprecated
+• let => block-scoped, inner variable doesn't affect outer one. 
 • const => can't be reassigned, but object properties can mutate.
 
 
 💡 Takeaways
 • Always declare variables before use.
-• Prefer let and const; avoid var.
+• Prefer let and const; don't use var.
 • Understand hoisting = foundation of JS logic.
 • JS always runs in creation => execution phases.
 • Call Stack ensures correct function order.
