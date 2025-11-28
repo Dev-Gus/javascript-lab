@@ -29,11 +29,18 @@ const { role = "guest" } = user;
 
 3. // Arrays & Useful Methods
 
-• map() => transforms elements/execute a function for each element
-• filter() => keeps only those that match a condition
-• reduce() => accumulates values
+• map : transforms elements/execute a function for each element and return a new array. Does not modify the original one.
+•forEach : executes a function to each element. Doesn't return a new array.
+• filter : keeps only those that match a condition
+• reduce : accumulates values
+• find : Return the first element that matches a specific given condition or undefined if no element matches the condition.
+• some: Check if at least one element of the array matches the given condition. returns true or false;
+• every: Check if every element matches the given condition. returns true or false.
+• sort: Order the elements of an array in their place, according to a comparison function.
+• slice: Creates a new array with a copy of a part of the original array, without modifying the original one.
+• splice: Allows to add or remove elements in a specific position from the original array.
 
-example: 
+example of some of them: 
 const prices = [10, 20, 30, 40];
 const total = prices
    .map(p => p * 1.2)
