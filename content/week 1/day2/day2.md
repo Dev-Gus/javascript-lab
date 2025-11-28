@@ -51,7 +51,7 @@ function outer(){
     inner(); // 'outer'
 }
 
-outer();
+outer(); // outer
 
 
 5. Closures
@@ -94,13 +94,24 @@ function map(arr, fn) {
 }
 map([1, 2, 3], x => x*2); // [2, 4, 6]
 
-example: once
-function once(fn) {
-    let done = false, result;
-    return (...args) => !done ? (done = true, result = fn(...args)) : result;
+example-take a func as argument: function operate(a, b, operation) {
+    return operation(a, b);
 }
 
+const sum = (x, y) => x + y;
+const result = operate(5, 3, sum);
+console.log(result); // 8
 
+
+example2-func that return a func:
+function createMultiplier(factor) {
+    return function(num) {
+        return num * factor;
+    }
+}
+
+const multiplyBy2 = createMultiplier(2);
+console.log(multiplyBy2(10)); // 20
 
 
 8. IIFE
@@ -115,7 +126,8 @@ Inmediately Invoked Function Expression
 
 
 9. Common Patterns
-Pattern	                  Purpose
+   Pattern	                  Purpose
+
 Closure	               Keep private data
 Factory Function	Create configured functions
 IIFE	                Temporary scope
@@ -124,8 +136,7 @@ Arrow Function	   Short functions, lexical this
 
 
 10. Best Practices
-•Prefer let / const
+•Use let / const not var.
 •Use arrow functions for callbacks. but not for objects methods
 •Use closures intentionally
 •Don't overuse globals
-•Use once or memoize for optimization patterns
