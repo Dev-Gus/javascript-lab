@@ -10,7 +10,7 @@ Watch ONE good video (Web Dev Simplified or similar - 15-20min max)
 
 Focus on understanding:
 
-What problem do Promises solve? (callback hell)
+What problem do Promises solve? (callback hell)..
 The 3 states (pending, fulfilled, rejected)
 How .then() and .catch() work
 Why chaining is useful

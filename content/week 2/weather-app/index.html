@@ -4,24 +4,56 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Weather App</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+    <link rel="icon" href="assets/favicon.png" type="image/png">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <main class="app">
-        <h1>Weather App</h1>
+        <div class="header">
+            <h1>Weather App</h1>
+            <button id="darkModeToggle" class="dark-mode-toggle" aria-label="Toggle dark mode" title="Toggle dark mode">
+                <span class="toggle-icon">🌙</span>
+            </button>
+        </div>
 
         <input type="text" id="cityInput" placeholder="Enter a city...">
         <button id="getWeatherBtn">Get Weather</button>
 
-        <p id="status"></p>
+        <div id="statusArea">
+            <svg id="loader" class="spinner" viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="25" cy="25" r="20" fill="none" stroke="#e0e0e0" stroke-width="3" />
+                <circle cx="25" cy="25" r="20" fill="none" stroke="#1976d2" stroke-width="3" stroke-dasharray="31.4 94.2" stroke-linecap="round" />
+            </svg>
+            <div id="statusContent">
+                <p id="status" class="status"></p>
+                <button id="retryBtn" class="retry-btn hidden">Retry</button>
+            </div>
+        </div>
 
-        <section id="weatherResult" class="hidden">
-            <h2 id="cityName"></h2>
-            <p><strong>Temperature:</strong> <span id="temp"></span>°C</p>
-            <p><strong>Windspeed:</strong> <span id="wind"></span> km/h</p>
+        <section id="weatherResult" class="weather-box">
+            <div class="weather-header">
+                <h2 id="cityName"></h2>
+                <span id="weatherIcon" class="weather-icon"></span>
+            </div>
+            <p><strong>Temperature:</strong> <span id="temp"></span><span>°C</span></p>
+            <p><strong>Feels Like:</strong> <span id="feelsLike"></span><span>°C</span></p>
+            <p><strong>Condition:</strong> <span id="condition"></span></p>
+            <p><strong>Humidity:</strong> <span id="humidity"></span><span>%</span></p>
+            <p><strong>Windspeed:</strong> <span id="wind"></span><span>km/h</span></p>
+            <p><strong>UV Index:</strong> <span id="uvIndex"></span></p>
             <p><strong>Time:</strong> <span id="time"></span></p>
+            <div id="weatherWarning" class="weather-warning hidden"></div>
         </section>
     </main>
+
+    <footer class="api-footer">
+        <p>Weather data provided by <a href="https://open-meteo.com/" target="_blank" rel="noopener noreferrer">Open-Meteo</a></p>
+        <p class="footer-credit">Built by <a href="https://github.com/Dev-Gus" target="_blank" rel="noopener noreferrer">Gustavo González</a> | November 2025</p>
+    </footer>
 
     <script type="module" src="./js/app.js"></script>
 </body>

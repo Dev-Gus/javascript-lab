@@ -1,8 +1,42 @@
 import ui from "./ui.js";
 import { getCoordinates, getWeatherData } from "./api.js";
+import { getWeatherIcon, isPrecipitation } from "./utils.js";
 import { cityInput } from "./ui.js";
 
 const getWeatherBtn = document.getElementById("getWeatherBtn");
+const retryBtn = document.getElementById("retryBtn");
+
+/**
+ * User-friendly error messages mapping
+ * Transform technical errors into helpful, actionable messages
+ */
+const getErrorMessage = (error) => {
+  const message = error.message || "Unknown error occurred";
+
+  // Map technical errors to user-friendly messages
+  const errorMap = {
+    "No internet connection": "📡 No internet connection. Please check your connection and try again.",
+    "City not found": "🏙️ City not found. Please check the spelling and try again.",
+    "Unable to connect to geocoding server": "🔗 Unable to reach location server. Please try again in a moment.",
+    "Failed to fetch weather data": "☁️ Unable to fetch weather data. Please try again.",
+    "Input must be a city name": "✏️ Please enter a valid city name.",
+    "Missing weather data": "📊 Missing weather data. Please try another city."
+  };
+
+  // Return mapped message or original message
+  return errorMap[message] || `❌ ${message}`;
+};
+
+/**
+ * Wrapper for API calls with timeout functionality
+ * If request takes longer than 10 seconds, fail gracefully
+ */
+const withTimeout = async (promise, timeoutMs = 10000) => {
+  const timeoutPromise = new Promise((_, reject) =>
+    setTimeout(() => reject(new Error("Request timeout. Please check your connection and try again.")), timeoutMs)
+  );
+  return Promise.race([promise, timeoutPromise]);
+};
 
 export const fetchWeather = async (city) => {
   try {
@@ -10,9 +44,30 @@ export const fetchWeather = async (city) => {
       throw new Error("Input must be a city name");
     }
 
-    const { latitude, longitude, name } = await getCoordinates(city);
+    // Validate input: max 100 characters, only letters, spaces, and hyphens
+    const MAX_CITY_LENGTH = 100;
+    if (city.length > MAX_CITY_LENGTH) {
+      throw new Error(`City name is too long (max ${MAX_CITY_LENGTH} characters)`);
+    }
 
-    const weather = await getWeatherData(latitude, longitude);
+    // Allow letters (including accented), spaces, hyphens, and apostrophes (e.g., "São Paulo", "Las Vegas", "Saint-Étienne")
+    const validCityPattern = /^[a-zA-ZÀ-ÿ\s\-']+$/;
+    if (!validCityPattern.test(city)) {
+      throw new Error("City name can only contain letters, spaces, hyphens, and apostrophes");
+    }
+
+    // Store this city as "last attempted" in case error occurs
+    ui.setLastAttemptedCity(city);
+
+    // Fetch coordinates with timeout protection
+    const { latitude, longitude, name } = await withTimeout(
+      getCoordinates(city)
+    );
+
+    // Fetch weather with timeout protection
+    const weather = await withTimeout(
+      getWeatherData(latitude, longitude)
+    );
 
     return { name, latitude, longitude, weather };
   } catch (error) {
@@ -22,12 +77,24 @@ export const fetchWeather = async (city) => {
 
 export const renderWeather = (data) => {
   if (!data || !data.weather) {
-    ui.showError("Missing weather data");
+    ui.setStatus({ type: "error", message: getErrorMessage(new Error("Missing weather data")) });
     return;
   }
 
   ui.updateWeatherUI(data.name, data.weather);
-  ui.showSuccess();
+
+  // Get and display weather icon
+  const { emoji, description } = getWeatherIcon(data.weather.weathercode);
+  ui.updateWeatherIcon(emoji, description);
+
+  // Check if it's raining/snowing and show warning
+  if (isPrecipitation(data.weather.weathercode)) {
+    ui.showPrecipitationWarning(true, '💧 Bring an umbrella or rain jacket!');
+  } else {
+    ui.showPrecipitationWarning(false);
+  }
+
+  ui.setStatus({ type: "success" });
 };
 
 export const initApp = async () => {
@@ -35,43 +102,87 @@ export const initApp = async () => {
     handleWeatherRequest();
   });
 
+  /**
+   * Retry button: retry with current input (or last attempted city if input is empty)
+   */
+  retryBtn.addEventListener("click", () => {
+    const currentInput = ui.getCityInput();
+    const lastCity = ui.getLastAttemptedCity();
+
+    // If user has edited the input, use the new value
+    if (currentInput && currentInput !== lastCity) {
+      handleWeatherRequest();
+    }
+    // Otherwise, if input is empty, restore the last attempted city
+    else if (!currentInput && lastCity) {
+      cityInput.value = lastCity;
+      handleWeatherRequest();
+    }
+    // If both are empty, do nothing (user will get error message)
+  });
+
+  /**
+   * Only clear status when user submits a NEW search (not while typing)
+   * This keeps error messages visible so user can read context while editing
+   */
+  // Remove: cityInput.addEventListener("input", () => { ui.clearStatus(); });
+
+  /**
+   * Clear the "last attempted city" when user edits input
+   * This way, retry button will use the new (corrected) input instead of old failed search
+   */
+  cityInput.addEventListener("input", () => {
+    ui.setLastAttemptedCity(""); // Clear so retry uses current input
+  });
+
   cityInput.addEventListener("keydown", (e) => {
     if (e.key === "Enter") {
       e.preventDefault();
-
       handleWeatherRequest();
     }
   });
 
+  // Try to load last saved city on app startup
   try {
     const lastCityStored = localStorage.getItem("lastCity");
     if (lastCityStored) {
-      ui.showLoading();
+      ui.disableBtn();
+      ui.setStatus({ type: "loading" });
       const cityWeather = await fetchWeather(lastCityStored);
       renderWeather(cityWeather);
     }
   } catch (error) {
-    console.error(error);
-    ui.showError(error.message);
+    // Expected errors are handled gracefully in setStatus, no need to log
+    ui.setStatus({ type: "error", message: getErrorMessage(error) });
+  } finally {
+    ui.enableBtn();
   }
 };
 
+/**
+ * Handle weather request with professional error handling
+ */
 const handleWeatherRequest = async () => {
   const city = ui.getCityInput();
-  if(!city) {
-    ui.showError('Please entera city');
+  if (!city) {
+    ui.setStatus({ type: "error", message: getErrorMessage(new Error("Input must be a city name")) });
     return;
   }
 
-  ui.showLoading();
+  // Clear previous status when starting a new search
+  ui.clearStatus();
+
+  ui.disableBtn();
+  ui.setStatus({ type: "loading" });
   try {
     const cityWeather = await fetchWeather(city);
     renderWeather(cityWeather);
     localStorage.setItem("lastCity", cityWeather.name);
-
     ui.clearInput();
   } catch (error) {
-    console.error(error);
-    ui.showError(error.message);
+    // Expected errors are handled gracefully in setStatus, no need to log
+    ui.setStatus({ type: "error", message: getErrorMessage(error) });
+  } finally {
+    ui.enableBtn();
   }
 };
